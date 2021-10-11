@@ -1,0 +1,52 @@
+---
+title: "Fortgeschrittene Statistik V3"
+author: "Timothy Justin Oesch"
+date: "10/4/2021"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Einfluss verschiedener Variablen auf das Abstimmungsresultat
+
+Es wurde der Einfluss von 4 Variablen auf das Abstimmungsresultat getestet. Der Datensatz ist *aggregat2.dta*, welcher die Abstimmungsresultate und zugehörige Veraiblen beinhaltet.
+
+```{r, results="asis", echo=FALSE, message=FALSE}
+library(haven)
+library(tidyverse)
+library(texreg)
+df_votes = read_dta("aggregat2.dta")
+model_1 = lm(acceptpo ~ suppshare2 + swjalager + nationalrat + srf2ja, data = df_votes)
+texreg(model_1, custom.coef.names = c("Konstante", "Ausgaben für Inserate JA Lager","Anteil Parteien, welche die JA Parole beschlossen haben","Anteil JA Schlussabstimmung im Nationalrat","Anteil JA zweite Welle SRF Umfrage"))
+```
+
+Es kann beobachtet werden, dass einige Variablen signifikant sind, während die anderen es nicht sind. Um die Wichtigkeit der Variablen zu berechnen, gibt es verschiedene Herangehensweisen.
+
+### Durchschnittlicher Effekt
+```{r}
+model_1 = lm(acceptpo ~ suppshare2 + swjalager + nationalrat + srf2ja, data = df_votes)
+coef(model_1)[-1] * colMeans(model.frame(model_1))[-1]
+```
+
+
+### Maximale Änderung
+```{r}
+coef(model_1)[-1] * diff(apply(model.frame(model_1), 2, range))[-1]
+```
+
+### Standartisierter Koeffizient
+```{r, message=FALSE}
+library(QuantPsyc)
+lm.beta(model_1)
+```
+
+### Anteil der erklärten Varianz
+```{r, message=FALSE}
+library(relaimpo)
+calc.relimp(model_1, type = "lmg", rela = TRUE)
+```

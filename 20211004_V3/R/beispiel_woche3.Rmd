@@ -1,0 +1,44 @@
+---
+title: "Woche 3"
+author: "Benjamin Schlegel"
+output:
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# R Markdown Beispiel
+
+*kursiv*
+
+**fett**
+
+***kursiv und fett***
+
+x^2^
+
+Ich studiere an der [UZH](www.uzh.ch). Meine Lieblingsformel ist $c^2 = a^2 + b^2$ von Pythagoras.
+
+$$
+  \beta_1 = \frac{Cov(x, y)}{Var(x)}
+$$
+
+* Methoden
+* Schweizer Politik
+* IB
+
+1. Politikwissenschaft
+2. Physik
+3. Biologie
+
+```{r, results='asis', message=FALSE, warning=FALSE, eval=FALSE}
+library(tidyverse)
+library(haven)
+df_votes = read_dta("aggregat2.dta")
+model = lm(acceptpo ~ suppshare2 + swjalager, data = df_votes)
+library(texreg)
+texreg(model)
+```
+
