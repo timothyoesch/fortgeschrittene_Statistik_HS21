@@ -17,7 +17,7 @@ summary(model2)
 # Wie stark verändert sich adj. R^2? 0.7832 - 0.7894 = **** -0.0062 ****
 
 
-## AUFGABE 4
+## AUFGABE 5
 
 df_votes_filtered = df_votes_1 %>% filter(!is.na(suppshare2) & !is.na(swjalager) & !is.na(nationalrat) & !is.na(srf2ja))
 model1 = lm(acceptpo ~ suppshare2 + swjalager + nationalrat + srf2ja, data = df_votes_filtered)
